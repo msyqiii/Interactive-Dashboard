@@ -13,42 +13,56 @@
             -webkit-tap-highlight-color: transparent;
         }
 
+        /* Background Animasi Bergerak */
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
         body {
-            background: linear-gradient(135deg, #ffeef8 0%, #fff5f5 100%);
+            background: linear-gradient(-45deg, #ffeef8, #fff5f5, #ffd3e8, #ffe5e5);
+            background-size: 400% 400%;
+            animation: gradientBG 15s ease infinite;
             min-height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
             padding: 15px;
             color: #4a4a4a;
+            overflow-x: hidden;
+            position: relative;
         }
 
+        /* EFEK GLASSMORPHISM YANG LEBIH HIDUP */
         .dashboard {
-            background: rgba(255, 255, 255, 0.85);
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
+            background: rgba(255, 255, 255, 0.45);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
             width: 100%;
             max-width: 450px;
             border-radius: 30px;
             padding: 25px 20px;
-            box-shadow: 0 15px 35px rgba(255, 182, 193, 0.2);
+            box-shadow: 0 20px 40px rgba(255, 107, 129, 0.15), 
+                        inset 0 0 0 2px rgba(255, 255, 255, 0.6);
             text-align: center;
-            border: 1px solid rgba(255, 255, 255, 0.6);
+            position: relative;
+            z-index: 10;
         }
 
         .header h1 {
             font-size: 1.5rem;
             color: #ff6b81;
             margin-bottom: 5px;
+            text-shadow: 0 2px 4px rgba(255, 107, 129, 0.1);
         }
 
         .header p {
             font-size: 0.85rem;
-            color: #777;
+            color: #666;
             margin-bottom: 25px;
         }
 
-        /* 1. MOOD PICKER STYLE */
         .section-title {
             font-size: 0.9rem;
             font-weight: 600;
@@ -60,6 +74,7 @@
             letter-spacing: 0.5px;
         }
 
+        /* 1. MOOD PICKER */
         .mood-container {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
@@ -68,13 +83,13 @@
         }
 
         .mood-box {
-            background: white;
-            border: 2px solid #fff0f2;
+            background: rgba(255, 255, 255, 0.6);
+            border: 2px solid rgba(255, 240, 242, 0.7);
             border-radius: 16px;
             padding: 12px 5px;
             cursor: pointer;
-            transition: all 0.2s ease;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.02);
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.01);
         }
 
         .mood-box span {
@@ -86,25 +101,76 @@
         .mood-box p {
             font-size: 0.7rem;
             font-weight: 600;
-            color: #888;
+            color: #777;
         }
 
         .mood-box.active {
             border-color: #ff6b81;
-            background: #fff5f6;
+            background: rgba(255, 245, 246, 0.9);
             transform: scale(1.05);
+            box-shadow: 0 8px 15px rgba(255, 107, 129, 0.15);
         }
 
         .mood-box.active p {
             color: #ff6b81;
         }
 
-        /* 2. LOVE BUZZER STYLE */
+        /* NEW: CUSTOM LOVE PROGRESS BAR (LEVEL BUCIN) */
+        .bucin-wrapper {
+            background: rgba(255, 255, 255, 0.6);
+            border-radius: 20px;
+            padding: 15px;
+            margin-bottom: 25px;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.01);
+            border: 1px solid rgba(255, 255, 255, 0.5);
+        }
+
+        .bucin-header {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: #555;
+            margin-bottom: 8px;
+        }
+
+        .slider-container {
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+
+        .bucin-slider {
+            -webkit-appearance: none;
+            width: 100%;
+            height: 12px;
+            border-radius: 10px;
+            background: rgba(255, 182, 193, 0.4);
+            outline: none;
+            cursor: pointer;
+        }
+
+        .bucin-slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            background: #ff6b81;
+            cursor: pointer;
+            box-shadow: 0 3px 8px rgba(255, 107, 129, 0.4);
+            transition: transform 0.1s;
+        }
+
+        .bucin-slider::-webkit-slider-thumb:active {
+            transform: scale(1.2);
+        }
+
+        /* 2. LOVE BUZZER */
         .buzzer-wrapper {
-            background: white;
+            background: rgba(255, 255, 255, 0.6);
             border-radius: 24px;
             padding: 20px;
-            box-shadow: 0 8px 20px rgba(0,0,0,0.02);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.01);
             margin-bottom: 25px;
             border: 1px solid rgba(255, 107, 129, 0.1);
         }
@@ -118,14 +184,15 @@
             border-radius: 50%;
             font-size: 2.5rem;
             cursor: pointer;
-            box-shadow: 0 10px 25px rgba(255, 71, 87, 0.4);
+            box-shadow: 0 10px 25px rgba(255, 71, 87, 0.35);
             display: block;
             margin: 15px auto;
-            transition: transform 0.1s;
+            transition: transform 0.1s, box-shadow 0.2s;
         }
 
         .btn-buzzer:active {
             transform: scale(0.9);
+            box-shadow: 0 5px 10px rgba(255, 71, 87, 0.2);
         }
 
         #buzzer-text {
@@ -134,9 +201,10 @@
             color: #ff4757;
             min-height: 20px;
             margin-top: 10px;
+            line-height: 1.4;
         }
 
-        /* 3. EMERGENCY & NOTE STYLE */
+        /* 3. EMERGENCY & NOTE */
         .action-container {
             display: flex;
             gap: 12px;
@@ -145,7 +213,7 @@
 
         .btn-emergency {
             flex: 1;
-            background: #fff;
+            background: rgba(255, 255, 255, 0.7);
             border: 2px dashed #ff4757;
             color: #ff4757;
             padding: 12px;
@@ -161,21 +229,23 @@
         }
 
         .btn-emergency:active {
-            background: #fff5f5;
+            background: rgba(255, 71, 87, 0.1);
             transform: scale(0.98);
         }
 
         .note-section {
-            background: white;
+            background: rgba(255, 255, 255, 0.6);
             border-radius: 20px;
             padding: 15px;
-            box-shadow: 0 8px 20px rgba(0,0,0,0.02);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.01);
             text-align: left;
+            border: 1px solid rgba(255, 255, 255, 0.4);
         }
 
         .note-input {
             width: 100%;
-            border: 1px solid #eee;
+            border: 1px solid rgba(0,0,0,0.05);
+            background: rgba(255, 255, 255, 0.8);
             border-radius: 12px;
             padding: 10px 12px;
             font-size: 0.85rem;
@@ -188,6 +258,7 @@
 
         .note-input:focus {
             border-color: #ff6b81;
+            background: white;
         }
 
         .btn-send-note {
@@ -201,10 +272,74 @@
             font-size: 0.85rem;
             cursor: pointer;
             transition: background 0.2s;
+            box-shadow: 0 4px 10px rgba(255, 107, 129, 0.2);
+        }
+
+        /* NEW: CUSTOM TOAST NOTIFICATION */
+        .toast-container {
+            position: fixed;
+            top: -100px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            padding: 12px 24px;
+            border-radius: 50px;
+            box-shadow: 0 10px 25px rgba(255, 107, 129, 0.2);
+            border: 1px solid rgba(255, 107, 129, 0.2);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            z-index: 9999;
+            transition: top 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            pointer-events: none;
+            width: max-content;
+            max-width: 90vw;
+        }
+
+        .toast-container.show {
+            top: 25px;
+        }
+
+        .toast-icon { font-size: 1.2rem; }
+        .toast-msg { font-size: 0.85rem; font-weight: 600; color: #4a4a4a; }
+
+        /* NEW: EFEK HUJAN HATI */
+        .heart-drop {
+            position: fixed;
+            pointer-events: none;
+            z-index: 5;
+            font-size: 1.5rem;
+            animation: fall linear forwards;
+        }
+
+        @keyframes fall {
+            0% {
+                transform: translateY(-20px) rotate(0deg) scale(0);
+                opacity: 0;
+            }
+            10% {
+                opacity: 1;
+                transform: translateY(0px) rotate(15deg) scale(1);
+            }
+            90% {
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(105vh) rotate(360deg) scale(0.6);
+                opacity: 0;
+            }
         }
     </style>
 </head>
 <body>
+
+    <!-- Wadah Custom Toast -->
+    <div id="custom-toast" class="toast-container">
+        <span id="toast-icon" class="toast-icon">✨</span>
+        <span id="toast-msg" class="toast-msg">Notifikasi Baru!</span>
+    </div>
 
     <div class="dashboard">
         <div class="header">
@@ -233,10 +368,23 @@
             </div>
         </div>
 
+        <!-- BARU: CUSTOM LOVE PROGRESS BAR -->
+        <div class="section-title">📈 Level Bucin Zara Hari Ini</div>
+        <div class="bucin-wrapper">
+            <div class="bucin-header">
+                <span>Kangen Biasa saja</span>
+                <span id="bucin-val" style="color: #ff6b81; font-size: 0.9rem;">50%</span>
+                <span>Kangen Kuadrat ❤️</span>
+            </div>
+            <div class="slider-container">
+                <input type="range" min="0" max="100" value="50" class="bucin-slider" id="love-slider" oninput="updateBucin(this.value)">
+            </div>
+        </div>
+
         <!-- FITUR 2: LOVE BUZZER -->
         <div class="section-title">❤️ Love Buzzer</div>
         <div class="buzzer-wrapper">
-            <p style="font-size: 0.8rem; color: #888;">Pencet tombol hati di bawah kalau lagi kangen Uqii!</p>
+            <p style="font-size: 0.8rem; color: #777;">Pencet tombol hati di bawah kalau lagi kangen Uqii!</p>
             <button class="btn-buzzer" onclick="pencetBuzzer()">❤️</button>
             <p id="buzzer-text"></p>
         </div>
@@ -258,18 +406,19 @@
     </div>
 
     <script>
-        // GANTI TEKS DI BAWAH INI DENGAN URL WEBHOOK DISCORD-MU
+        // === MASUKKAN URL WEBHOOK DISCORD KAMU DI SINI ===
         const DISCORD_WEBHOOK_URL = "https://discordapp.com/api/webhooks/1524831289415434354/EiC3hkhyhbO4yKvPVcvUT3YbOJRMBgsr-LbD5SgqHah9O8Wz9bgoQWFdHKdlqnYPqwCs";
 
         let moodSekarang = "Belum diupdate";
+        let levelBucin = "50%";
         const teksBuzzer = [
             "Uqii juga kangen bangeeet sama Zaraaa! ❤️",
             "Ayo keluar lagii zaraaaa, kitaa ketemuann lagii! 🫶🏻",
-            "Hehehe kangen yaaa? Sini hugs! 🤗",
+            "Hehehe kangen yaaa? Sinii zaraaaa! 🤗",
             "Kangennya dikirim ke WA dong, jangan cuma dipencet! 😜",
         ];
 
-        // Jalur Audio Synthesizer internal biar HP bunyi pop imut saat klik tombol
+        // Sistem Audio internal
         let audioCtx = null;
         function initAudio() {
             if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
@@ -285,11 +434,59 @@
             osc.type = type;
             osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
             if(type === 'sine') osc.frequency.exponentialRampToValueAtTime(10, audioCtx.currentTime + duration);
-            gain.gain.setValueAtTime(0.3, audioCtx.currentTime);
+            gain.gain.setValueAtTime(0.2, audioCtx.currentTime);
             gain.gain.linearRampToValueAtTime(0.01, audioCtx.currentTime + duration);
             osc.start();
             osc.stop(audioCtx.currentTime + duration);
         }
+
+        // FUNGSI BARU: CUSTOM TOAST NOTIFICATION
+        function showToast(message, icon = "✨") {
+            const toast = document.getElementById("custom-toast");
+            document.getElementById("toast-msg").innerText = message;
+            document.getElementById("toast-icon").innerText = icon;
+            
+            toast.classList.add("show");
+            setTimeout(() => {
+                toast.classList.remove("show");
+            }, 3500);
+        }
+
+        // FUNGSI BARU: RAIN/SHOWER HEART EFFECT
+        function buatHujanHati() {
+            const hearts = ["❤️", "💖", "💝", "💕", "🌸"];
+            const totalHati = 25; // Jumlah hati yang jatuh
+
+            for (let i = 0; i < totalHati; i++) {
+                setTimeout(() => {
+                    const heart = document.createElement("div");
+                    heart.classList.add("heart-drop");
+                    heart.innerText = hearts[Math.floor(Math.random() * hearts.length)];
+                    
+                    // Mengacak posisi horizontal dan kecepatan jatuh
+                    heart.style.left = Math.random() * 100 + "vw";
+                    heart.style.animationDuration = (Math.random() * 2 + 1.5) + "s";
+                    
+                    document.body.appendChild(heart);
+                    
+                    // Bersihkan elemen setelah selesai animasi
+                    setTimeout(() => heart.remove(), 3500);
+                }, i * 60); // Jeda kemunculan antar hati biar alami
+            }
+        }
+
+        // LOGIKA FITUR BARU: LOVE PROGRESS BAR
+        function updateBucin(val) {
+            levelBucin = val + "%";
+            document.getElementById("bucin-val").innerText = levelBucin;
+        }
+
+        // Tambahkan trigger lepas geser untuk kirim update ke discord tanpa spamming
+        document.getElementById("love-slider").addEventListener("change", function() {
+            playSound(350, 0.08, 'sine');
+            kirimKeDiscord("📈 UPDATE LEVEL BUCIN ZARA", `Zara menggeser Love Progress Bar miliknya!\n## Level Bucin Saat Ini: **${levelBucin}**`, 16738435);
+            showToast(`Makin bucin ya! Level terupdate: ${levelBucin} 🥰`, "📈");
+        });
 
         // LOGIKA FITUR 1: MOOD PICKER
         function pilihMood(elemen, namaMood) {
@@ -298,26 +495,29 @@
             elemen.classList.add('active');
             moodSekarang = namaMood;
 
-            kirimKeDiscord("📊 UPDATE MOOD ZARA", `Zara baru saja memperbarui status mood-nya harian menjadi:\n## **${namaMood}**`, 5026544);
-            alert(`Mood kamu berhasil diupdate ke Uqii: ${namaMood} ✨`);
+            kirimKeDiscord("📊 UPDATE MOOD ZARA", `Zara baru saja memperbarui status mood-nya harian menjadi:\n## **${namaMood}**\n*Level Bucin: ${levelBucin}*`, 5026544);
+            showToast(`Mood kamu berhasil diupdate ke Uqii: ${namaMood}`, "📊");
         }
 
         // LOGIKA FITUR 2: LOVE BUZZER
         function pencetBuzzer() {
             playSound(250, 0.15, 'triangle');
+            buatHujanHati(); // Efek Hujan Hati!
+
             const indexAcak = Math.floor(Math.random() * teksBuzzer.length);
             const pesanDipilih = teksBuzzer[indexAcak];
             document.getElementById("buzzer-text").innerText = pesanDipilih;
 
-            kirimKeDiscord("❤️ ZARA PENCET LOVE BUZZER!", `Zara lagi kangen banget sama kamu sekarang! \n\n**Status Mood Saat Ini:** ${moodSekarang}\n**Respons Web:** _"${pesanDipilih}"_`, 16739201);
+            kirimKeDiscord("❤️ ZARA PENCET LOVE BUZZER!", `Zara lagi kangen banget sama kamu sekarang! \n\n**Status Mood Saat Ini:** ${moodSekarang}\n**Level Bucin:** ${levelBucin}\n**Respons Web:** _"${pesanDipilih}"_`, 16739201);
         }
 
         // LOGIKA FITUR 3: EMERGENCY HUG
         function panggilDarurat() {
             playSound(600, 0.3, 'sawtooth');
+            buatHujanHati(); // Efek Hujan Hati!
             
-            kirimKeDiscord("🚨 PANGGILAN DARURAT: EMERGENCY HUG!", `Zara mengirim sinyal darurat! Dia lagi butuh support/pelukan virtual kamu sekarang juga. Hubungi dia segera! \n\n**Status Mood Saat Ini:** ${moodSekarang}`, 16711715);
-            alert("Sinyal darurat berhasil dikirim! Uqii bakal langsung notice di HP-nya! 🚨❤️");
+            kirimKeDiscord("🚨 PANGGILAN DARURAT: EMERGENCY HUG!", `Zara mengirim sinyal darurat! Dia lagi butuh support/pelukan virtual kamu sekarang juga. Hubungi dia segera! \n\n**Status Mood Saat Ini:** ${moodSekarang}\n**Level Bucin:** ${levelBucin}`, 16711715);
+            showToast("Sinyal darurat terkirim ke HP Uqii! 🚨❤️", "🚨");
         }
 
         // LOGIKA FITUR 4: STICKY NOTES
@@ -327,13 +527,13 @@
             const isiCatatan = inputCatatan.value.trim();
 
             if (isiCatatan === "") {
-                alert("Kotak catatannya diisi dulu yaa zaraaa~");
+                showToast("Kotak catatannya diisi dulu yaa zaraaa~", "⚠️");
                 return;
             }
 
-            kirimKeDiscord("📌 ZARA MENEMPEL CATATAN BARU", `Zara ninggalin pesan/catatan kecil buat kamu:\n\n> "${isiCatatan}"\n\n**Status Mood Saat Ini:** ${moodSekarang}`, 16761035);
+            kirimKeDiscord("📌 ZARA MENEMPEL CATATAN BARU", `Zara ninggalin pesan/catatan kecil buat kamu:\n\n> "${isiCatatan}"\n\n**Status Mood Saat Ini:** ${moodSekarang}\n**Level Bucin:** ${levelBucin}`, 16761035);
             
-            alert("Catatan kecilmu berhasil ditempel! 🕊️");
+            showToast("Catatan kecilmu berhasil ditempel! 🕊️", "📌");
             inputCatatan.value = "";
         }
 
