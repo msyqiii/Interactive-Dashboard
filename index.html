@@ -355,7 +355,7 @@
     <script>
         const DISCORD_WEBHOOK_URL = "https://discordapp.com/api/webhooks/1524831289415434354/EiC3hkhyhbO4yKvPVcvUT3YbOJRMBgsr-LbD5SgqHah9O8Wz9bgoQWFdHKdlqnYPqwCs";
         
-        let existingMessageId = localStorage.getItem("zaraaa_msg_id") || null;
+        let existingMessageId = null;
 
         // STATE UTAMA
         let currentLevelKangen = "50%";
@@ -413,7 +413,7 @@
                         osc.frequency.linearRampToValueAtTime(400, sekarang + (i * 0.08) + 0.04);
                     }
                     
-                    gainNode.gain.setValueAtTime(0.2, excavations = sekarang);
+                    gainNode.gain.setValueAtTime(0.2, sekarang);
                     gainNode.gain.linearRampToValueAtTime(0.01, sekarang + 0.45);
                     
                     osc.start(sekarang);
@@ -521,18 +521,15 @@
             sinkronkanKeDiscord();
         }
 
-        // ENGINE SINKRONISASI SINGLE-MESSAGE PERMANEN (PERSIS SEPERTI DI GAMBAR)
         async function sinkronkanKeDiscord() {
             const sekarang = new Date();
             const jamMenit = String(sekarang.getHours()).padStart(2, '0') + "." + String(sekarang.getMinutes()).padStart(2, '0');
             
-            // Ekstraksi kutipan kritis dari sinyal darurat
             let teksProsedur = '"Tidak ada status darurat aktif"';
             if (sinyalDarurat.includes('"')) {
                 teksProsedur = sinyalDarurat.substring(sinyalDarurat.indexOf('"'));
             }
 
-            // Struktur payload diatur mutlak agar 100% mirip dengan tangkapan layar target
             const payload = {
                 username: "Zaraaa's Dashboard v2.2",
                 avatar_url: "https://i.imgur.com/vHqB3qL.png", 
@@ -546,7 +543,7 @@
                                      `🚨 **Sinyal Darurat**\n${sinyalDarurat}\n\n` +
                                      `🛰️ **Love Buzzer Status**\n${loveBuzzerStatus}\n\n` +
                                      `📌 **Memo Terakhir Zaraaa**\n> ${catatanTerakhir}`,
-                        color: 15729726, // Warna garis merah neon solid (#F0033E dalam desimal)
+                        color: 15729726, 
                         footer: {
                             text: `Zaraaa's Dashboard v2.2 // Live Sync Terakhir | Today at ${jamMenit}`
                         }
@@ -575,10 +572,8 @@
                     if (!existingMessageId) {
                         const resData = await response.json();
                         existingMessageId = resData.id;
-                        localStorage.setItem("zaraaa_msg_id", existingMessageId);
                     }
                 } else if (response.status === 404 && existingMessageId) {
-                    localStorage.removeItem("zaraaa_msg_id");
                     existingMessageId = null;
                     sinkronkanKeDiscord();
                 }
