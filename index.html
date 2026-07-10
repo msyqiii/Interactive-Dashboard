@@ -1,354 +1,381 @@
-<html lang="id">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Zaraaa's Personal Space 🌸</title>
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;800&family=Rajdhani:wght@500;600;700&display=swap" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Zaraaa's Love Dashboard v2.2</title>
     <style>
+        :root {
+            --bg-dark: #0d0b11;
+            --panel-bg: rgba(26, 21, 36, 0.75);
+            --neon-pink: #ff52a2;
+            --neon-fuchsia: #e82c88;
+            --neon-purple: #9d4edd;
+            --text-main: #f3f0f7;
+            --text-muted: #a49cb3;
+        }
+
         * {
-            box-shadow: none;
             box-sizing: border-box;
             margin: 0;
             padding: 0;
-            font-family: 'Rajdhani', sans-serif;
-            -webkit-tap-highlight-color: transparent;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
 
-        /* Background Cyber-Pop Pink Neon */
         body {
-            background: #0d0614;
-            background-image: 
-                radial-gradient(circle at 20% 30%, rgba(244, 63, 94, 0.2) 0%, transparent 45%),
-                radial-gradient(circle at 80% 70%, rgba(232, 121, 249, 0.2) 0%, transparent 45%);
+            background-color: var(--bg-dark);
+            color: var(--text-main);
             min-height: 100vh;
             display: flex;
             justify-content: center;
-            align-items: flex-start;
-            padding: 30px 15px;
-            color: #f8fafc;
+            align-items: center;
             overflow-x: hidden;
-            overflow-y: auto;
             position: relative;
-        }
-
-        /* Latar Belakang Partikel Mengambang */
-        .bg-particle {
-            position: fixed;
-            top: -20px;
-            pointer-events: none;
-            z-index: 1;
-            font-size: 1.3rem;
-            animation: floatAway 5s linear infinite;
-            opacity: 0.35;
-        }
-        @keyframes floatAway {
-            0% { transform: translateY(110vh) translateX(0) rotate(0deg); opacity: 0; }
-            10% { opacity: 0.4; }
-            90% { opacity: 0.4; }
-            100% { transform: translateY(-10vh) translateX(60px) rotate(360deg); opacity: 0; }
-        }
-
-        /* Container Dashboard Utama (Glitch & Rose Glow) */
-        .dashboard {
-            background: rgba(20, 10, 30, 0.75);
-            backdrop-filter: blur(25px);
-            -webkit-backdrop-filter: blur(25px);
-            width: 100%;
-            max-width: 460px;
-            border-radius: 30px;
-            padding: 30px 20px;
-            border: 2px solid rgba(244, 63, 94, 0.4);
-            box-shadow: 0 0 40px rgba(244, 63, 94, 0.2), inset 0 0 20px rgba(232, 121, 249, 0.08);
-            text-align: center;
-            position: relative;
-            z-index: 10;
-            margin: auto 0;
-        }
-
-        .header h1 {
-            font-family: 'Orbitron', sans-serif;
-            font-size: 1.7rem;
-            font-weight: 800;
-            background: linear-gradient(45deg, #f43f5e, #e879f9);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            margin-bottom: 5px;
-            letter-spacing: 1px;
-            filter: drop-shadow(0 0 10px rgba(244, 63, 94, 0.6));
-        }
-
-        .header p {
-            font-size: 0.95rem;
-            color: #a1a1aa;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            margin-bottom: 30px;
-        }
-
-        .section-title {
-            font-family: 'Orbitron', sans-serif;
-            font-size: 0.9rem;
-            font-weight: 700;
-            color: #f472b6;
-            margin: 25px 0 12px 0;
-            text-align: left;
-            padding-left: 5px;
-            text-transform: uppercase;
-            letter-spacing: 1.5px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        /* 1. GRID STATUS SIBUK & MOOD */
-        .mood-container {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 12px;
-        }
-
-        .mood-box {
-            background: rgba(45, 20, 55, 0.4);
-            border: 1px solid rgba(255, 255, 255, 0.05);
-            border-radius: 18px;
-            padding: 15px 5px;
-            cursor: pointer;
-            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-        }
-
-        .mood-box span {
-            display: block;
-            font-size: 2.2rem;
-            margin-bottom: 6px;
-            filter: drop-shadow(0 4px 6px rgba(0,0,0,0.2));
-            transition: transform 0.2s;
-        }
-
-        .mood-box p {
-            font-size: 0.85rem;
-            font-weight: 700;
-            color: #cbd5e1;
-        }
-
-        .mood-box:hover span { transform: scale(1.15) rotate(-5deg); }
-
-        .mood-box.active {
-            border-color: #f43f5e;
-            background: rgba(244, 63, 94, 0.2);
-            transform: scale(1.05);
-            box-shadow: 0 0 20px rgba(244, 63, 94, 0.4);
-        }
-
-        .mood-box.active p { color: #fb7185; }
-
-        /* 2. KANGEN SLIDER PINK PINK GLOW */
-        .bucin-wrapper {
-            background: rgba(35, 15, 45, 0.6);
-            border-radius: 20px;
             padding: 20px;
-            border: 1px solid rgba(232, 121, 249, 0.3);
-            box-shadow: inset 0 0 15px rgba(232, 121, 249, 0.05);
         }
 
-        .bucin-header {
-            display: flex;
-            justify-content: space-between;
-            font-size: 0.9rem;
-            font-weight: 700;
-            color: #a1a1aa;
-            margin-bottom: 12px;
-            text-transform: uppercase;
+        /* Background Animated Particles */
+        .bg-particle {
+            position: absolute;
+            pointer-events: none;
+            font-size: 20px;
+            opacity: 0.4;
+            animation: floatUp linear forwards;
+            z-index: 0;
+            bottom: -50px;
         }
 
-        .bucin-slider {
-            -webkit-appearance: none;
-            width: 100%;
-            height: 12px;
-            border-radius: 20px;
-            background: #251236;
-            outline: none;
-            cursor: pointer;
-            border: 1px solid rgba(255,255,255,0.05);
+        @keyframes floatUp {
+            0% { transform: translateY(0) rotate(0deg); opacity: 0.4; }
+            100% { transform: translateY(-110vh) rotate(360deg); opacity: 0; }
         }
 
-        .bucin-slider::-webkit-slider-thumb {
-            -webkit-appearance: none;
-            width: 26px;
-            height: 26px;
-            border-radius: 50%;
-            background: linear-gradient(45deg, #f43f5e, #e879f9);
-            cursor: pointer;
-            box-shadow: 0 0 15px #f43f5e;
-            transition: transform 0.1s;
-        }
-        .bucin-slider::-webkit-slider-thumb:active { transform: scale(1.2); }
-
-        /* 3. INTERAKSI KILAT */
-        .action-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 12px;
-        }
-
-        .btn-action {
-            background: rgba(45, 20, 55, 0.5);
-            border: 1px solid rgba(255,255,255,0.08);
-            border-radius: 16px;
-            padding: 16px;
-            cursor: pointer;
-            font-weight: 700;
-            font-size: 1rem;
-            color: #fff;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 8px;
-            transition: all 0.2s;
-        }
-        .btn-action span { font-size: 2rem; }
-        
-        .btn-action.radar { border-color: #e879f9; }
-        .btn-action.radar:active { background: rgba(232, 121, 249, 0.2); transform: translateY(2px); }
-
-        .btn-action.emergency { border-color: #f43f5e; color: #fda4af; }
-        .btn-action.emergency:active { background: rgba(244, 63, 94, 0.2); transform: translateY(2px); }
-
-        /* 4. PAPAN PESAN / TERMINAL COMFORT */
-        .note-section {
-            background: rgba(35, 15, 45, 0.6);
-            border-radius: 20px;
-            padding: 15px;
-            border: 1px solid rgba(255,255,255,0.05);
-        }
-
-        .note-input {
-            width: 100%;
-            border: 1px solid #3f3f46;
-            background: #12061c;
-            color: #fafafa;
-            border-radius: 12px;
-            padding: 12px;
-            font-size: 1rem;
-            resize: none;
-            outline: none;
-            margin-bottom: 12px;
-        }
-        .note-input:focus { border-color: #f43f5e; box-shadow: 0 0 10px rgba(244, 63, 94, 0.3); }
-
-        .btn-send-note {
-            background: linear-gradient(90deg, #e11d48, #f43f5e);
-            color: white;
-            border: none;
-            width: 100%;
-            padding: 12px;
-            border-radius: 12px;
-            font-weight: 700;
-            font-size: 1rem;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            cursor: pointer;
-            box-shadow: 0 4px 15px rgba(244, 63, 94, 0.4);
-        }
-
-        /* LEDAKAN EMOTE SAAT DIKLIK */
+        /* Blast Particles */
         .blast-particle {
             position: fixed;
             pointer-events: none;
-            z-index: 99;
-            font-size: 1.5rem;
-            animation: blastOutLite 1s ease-out forwards;
-        }
-        @keyframes blastOutLite {
-            0% { transform: translate(-50%, -50%) scale(0.5); opacity: 1; }
-            100% { transform: translate(var(--mx), var(--my)) scale(1.1) rotate(-20deg); opacity: 0; }
+            font-size: 24px;
+            z-index: 9999;
+            animation: blastOut 0.8s cubic-bezier(0.1, 0.8, 0.3, 1) forwards;
         }
 
-        /* TOAST ALERT BOX */
-        .toast-container {
-            position: fixed;
-            top: -100px;
-            left: 50%;
-            transform: translateX(-50%);
-            background: #1c0a24;
-            padding: 14px 28px;
-            border-radius: 50px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.6);
-            border: 1px solid #e879f9;
+        @keyframes blastOut {
+            0% { transform: translate(0, 0) scale(1); opacity: 1; }
+            100% { transform: translate(var(--mx), var(--my)) scale(0.3); opacity: 0; }
+        }
+
+        .dashboard-container {
+            width: 100%;
+            max-width: 500px;
+            background: var(--panel-bg);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 82, 162, 0.25);
+            border-radius: 24px;
+            padding: 30px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5), 0 0 25px rgba(255, 82, 162, 0.15);
+            z-index: 10;
+            position: relative;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 25px;
+        }
+
+        .header h1 {
+            font-size: 26px;
+            font-weight: 700;
+            letter-spacing: 1px;
+            background: linear-gradient(45deg, var(--neon-pink), var(--neon-purple));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 0 15px rgba(255, 82, 162, 0.3);
+            margin-bottom: 5px;
+        }
+
+        .header p {
+            font-size: 13px;
+            color: var(--text-muted);
+        }
+
+        .section-title {
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            color: var(--neon-pink);
+            margin-bottom: 12px;
             display: flex;
             align-items: center;
-            gap: 12px;
-            z-index: 9999;
-            transition: top 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            width: max-content;
-            max-width: 92vw;
+            gap: 8px;
+            font-weight: 600;
         }
-        .toast-container.show { top: 25px; }
-        .toast-msg { font-size: 0.95rem; font-weight: 700; color: #fafafa; letter-spacing: 0.5px; }
+
+        .panel-block {
+            background: rgba(13, 11, 17, 0.5);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 16px;
+            padding: 18px;
+            margin-bottom: 20px;
+            transition: border 0.3s ease;
+        }
+
+        .panel-block:hover {
+            border-color: rgba(255, 82, 162, 0.2);
+        }
+
+        /* Slider Kangen */
+        .slider-container {
+            position: relative;
+        }
+
+        .slider-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+            font-size: 14px;
+        }
+
+        .slider-header span:last-child {
+            font-weight: 700;
+            color: var(--neon-pink);
+            text-shadow: 0 0 8px rgba(255, 82, 162, 0.4);
+        }
+
+        .range-slider {
+            -webkit-appearance: none;
+            width: 100%;
+            height: 8px;
+            border-radius: 5px;
+            background: rgba(255, 255, 255, 0.1);
+            outline: none;
+            margin: 10px 0;
+        }
+
+        .range-slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: linear-gradient(45deg, var(--neon-pink), var(--neon-fuchsia));
+            cursor: pointer;
+            box-shadow: 0 0 10px var(--neon-pink);
+            transition: transform 0.1s;
+        }
+
+        .range-slider::-webkit-slider-thumb:hover {
+            transform: scale(1.2);
+        }
+
+        /* Mood Selector */
+        .mood-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+        }
+
+        .mood-box {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 12px;
+            padding: 12px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 14px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .mood-box .emoji {
+            font-size: 22px;
+        }
+
+        .mood-box:hover {
+            background: rgba(255, 82, 162, 0.08);
+            border-color: rgba(255, 82, 162, 0.3);
+            transform: translateY(-2px);
+        }
+
+        .mood-box.active {
+            background: linear-gradient(135deg, rgba(255, 82, 162, 0.2), rgba(157, 78, 221, 0.2));
+            border-color: var(--neon-pink);
+            box-shadow: 0 0 12px rgba(255, 82, 162, 0.25);
+            font-weight: 600;
+        }
+
+        /* Action Buttons */
+        .btn {
+            width: 100%;
+            padding: 14px;
+            border: none;
+            border-radius: 14px;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+            color: white;
+            margin-bottom: 12px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(45deg, var(--neon-pink), var(--neon-purple));
+            box-shadow: 0 4px 15px rgba(255, 82, 162, 0.3);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(255, 82, 162, 0.5);
+        }
+
+        .btn-danger {
+            background: linear-gradient(45deg, #ff416c, #ff4b2b);
+            box-shadow: 0 4px 15px rgba(255, 65, 108, 0.3);
+        }
+
+        .btn-danger:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(255, 65, 108, 0.5);
+        }
+
+        .btn:active {
+            transform: translateY(1px);
+        }
+
+        /* Terminal Note */
+        .input-area {
+            width: 100%;
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            padding: 12px;
+            color: var(--text-main);
+            font-size: 13px;
+            resize: none;
+            outline: none;
+            transition: border-color 0.3s;
+            margin-bottom: 10px;
+        }
+
+        .input-area:focus {
+            border-color: var(--neon-purple);
+        }
+
+        .btn-send {
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            padding: 10px;
+            font-size: 13px;
+            margin-bottom: 0;
+        }
+
+        .btn-send:hover {
+            background: var(--neon-purple);
+            border-color: var(--neon-purple);
+            box-shadow: 0 0 10px rgba(157, 78, 221, 0.5);
+        }
+
+        /* Toast Notification */
+        .toast {
+            position: fixed;
+            bottom: -100px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(20, 15, 30, 0.9);
+            border: 1px solid var(--neon-pink);
+            padding: 12px 24px;
+            border-radius: 50px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.6), 0 0 15px rgba(255, 82, 162, 0.3);
+            transition: bottom 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            z-index: 10000;
+            white-space: nowrap;
+        }
+
+        .toast.show {
+            bottom: 30px;
+        }
+
+        .toast .icon {
+            font-size: 18px;
+        }
+
+        .toast .msg {
+            font-size: 13px;
+            font-weight: 500;
+        }
     </style>
 </head>
 <body>
 
-    <div id="custom-toast" class="toast-container">
-        <span id="toast-icon">✨</span>
-        <span id="toast-msg" class="toast-msg">Gelombang Terkirim!</span>
+    <div class="dashboard-container">
+        <div class="header">
+            <h1>ZARAAA'S CORE LINK</h1>
+            <p>Satelit Pemancar Sinyal Bucin Khusus Uqiii v2.2</p>
+        </div>
+
+        <!-- Panel Kangen -->
+        <div class="section-title">📊 RADAR EMOSIONAL</div>
+        <div class="panel-block slider-container">
+            <div class="slider-header">
+                <span>Intensitas Kangen:</span>
+                <span id="bucin-val">50%</span>
+            </div>
+            <input type="range" min="0" max="100" value="50" class="range-slider" id="love-slider" oninput="updateBucin(this.value)">
+        </div>
+
+        <!-- Panel Kondisi -->
+        <div class="section-title">🔮 AKTIVITAS & MOOD</div>
+        <div class="panel-block">
+            <div class="mood-grid">
+                <div class="mood-box" onclick="kirimMood(this, 'Lagi Sibuk Kuliah/Tugas 📚')">
+                    <span class="emoji">📚</span>
+                    <span>Sibuk Tugas</span>
+                </div>
+                <div class="mood-box" onclick="kirimMood(this, 'Kangen Berat / Butuh Dimanja 💕')">
+                    <span class="emoji">💕</span>
+                    <span>Kangen Berat</span>
+                </div>
+                <div class="mood-box" onclick="kirimMood(this, 'Lagi Pengen Ngobrol / Gabut 📱')">
+                    <span class="emoji">📱</span>
+                    <span>Gabut / Chill</span>
+                </div>
+                <div class="mood-box" onclick="kirimMood(this, 'Mode Sensitif / Jangan Dicuekin 😾')">
+                    <span class="emoji">😾</span>
+                    <span>Sensitif (Peka!)</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Panel Interaksi Cepat -->
+        <div class="section-title">📡 TRANSMITTER LANGSUNG</div>
+        <button class="btn btn-primary" onclick="pencetBuzzer(event)">
+            <span>💖</span> Nge-Ping Uqiii
+        </button>
+        <button class="btn btn-danger" onclick="panggilDarurat(event)">
+            <span>🚨</span> Butuh Perhatian! (SOS)
+        </button>
+
+        <!-- Panel Terminal Catatan -->
+        <div class="section-title">💬 ENKRIPSI MEMO TERMINAL</div>
+        <div class="panel-block" style="margin-bottom: 0;">
+            <textarea class="input-area" id="note-text" rows="3" placeholder="Tulis sesuatu untuk Uqii di sini..."></textarea>
+            <button class="btn btn-send" onclick="kirimCatatan()">Kirim Memo ke Discord</button>
+        </div>
     </div>
 
-    <div class="dashboard">
-        <div class="header">
-            <h1>ZARAAA'S ROOM 🌸</h1>
-            <p>// Co-Pilot Space</p>
-        </div>
-
-        <div class="section-title">📊 STATUS VITAL & AKTIVITAS</div>
-        <div class="mood-container">
-            <div class="mood-box" onclick="kirimMood(this, '✨ Lagi Happy / Bersantai')">
-                <span>✨</span><p>Chill/Happy</p>
-            </div>
-            <div class="mood-box" onclick="kirimMood(this, '💄 Lagi Dandan / Siap-siap')">
-                <span>💄</span><p>Get Ready</p>
-            </div>
-            <div class="mood-box" onclick="kirimMood(this, '📚 Belajar / Sibuk')">
-                <span>📚</span><p>Focus Mode</p>
-            </div>
-            <div class="mood-box" onclick="kirimMood(this, '☕ Ngopi / Kulineran')">
-                <span>☕</span><p>Me Time</p>
-            </div>
-            <div class="mood-box" onclick="kirimMood(this, '🌀 Overthinking Berat')">
-                <span>🌀</span><p>Overthink</p>
-            </div>
-            <div class="mood-box" onclick="kirimMood(this, '🔋 Low Battery / Capek banget')">
-                <span>🔋</span><p>Low Power</p>
-            </div>
-        </div>
-
-        <div class="section-title">📈 TELEMETRI KANGEN CO-PILOT</div>
-        <div class="bucin-wrapper">
-            <div class="bucin-header">
-                <span>Calm</span>
-                <span id="bucin-val" style="color: #f43f5e; font-family: 'Orbitron', sans-serif; font-weight: 800;">50%</span>
-                <span>Explode! 💖</span>
-            </div>
-            <input type="range" min="0" max="100" value="50" class="bucin-slider" id="love-slider" oninput="updateBucin(this.value)">
-        </div>
-
-        <div class="section-title">🛰️ MODUL GANGGU KILAT</div>
-        <div class="action-grid">
-            <div class="btn-action radar" onclick="pencetBuzzer(event)">
-                <span>💖</span>
-                <p>Nge-Ping Uqiii</p>
-            </div>
-            <div class="btn-action emergency" onclick="panggilDarurat(event)">
-                <span>🚨</span>
-                <p>Butuh Perhatian</p>
-            </div>
-        </div>
-
-        <div class="section-title">💬 ENKRIPSI MEMO PAPAN PESAN</div>
-        <div class="note-section">
-            <textarea class="note-input" id="note-text" rows="2" placeholder="Tulis keluh kesah, gosip, atau pesan rahasia di sini..."></textarea>
-            <button class="btn-send-note" onclick="kirimCatatan()">Kirim Memo Ke Uqii ✨</button>
-        </div>
+    <!-- Sistem Toast -->
+    <div class="toast" id="custom-toast">
+        <span class="icon" id="toast-icon">✨</span>
+        <span class="msg" id="toast-msg">Sinyal berhasil dikirim!</span>
     </div>
 
     <script>
@@ -362,11 +389,20 @@
         let loveBuzzerStatus = "Belum ada interaksi 📡";
         let catatanTerakhir = "Belum ada pesan terbaru 💬";
 
+        // Kumpulan teks acak untuk tombol "Nge-Ping Uqiii"
         const teksPing = [
             "Zaraaa mendadak kangen berat sama Uqii! 👀🔥",
             "Sinyal gemas meluncur, Uqii wajib bales secepatnya! 🚀🌸",
             "Cuma mau nge-ping biar Uqii tahu kalau Zaraaa lagi mikirin Uqii 😜✨",
             "Deteksi kangen berbunyi: Uqii mana yaaa? 🛰️🎀"
+        ];
+
+        // Kumpulan teks acak untuk tombol "Butuh Perhatian" (Emergency)
+        const teksDarurat = [
+            "🚨 Zaraaa lagi butuh perhatian lebih/pukpuk secepatnya!",
+            "🚨 Sinyal SOS Manja! Uqii harus buru-buru cek HP sekarang! 🥺",
+            "🚨 Warning! Kuota kangen Zaraaa sudah kritis, butuh asupan perhatian Uqii! 💕",
+            "🚨 Emergency Core! Hubungi Zaraaa segera atau mode merajuk akan aktif! 😤"
         ];
 
         // Generator Partikel Latar Belakang (Versi Cewek)
@@ -434,6 +470,7 @@
             kirimKeDiscord("MOOD TERKINI BERUBAH");
         }
 
+        // Aksi saat tombol "Nge-Ping Uqiii" dipencet
         function pencetBuzzer(e) {
             buatLedakanPartikel(e.clientX, e.clientY, 5); 
             const teks = teksPing[Math.floor(Math.random() * teksPing.length)];
@@ -444,10 +481,12 @@
             kirimKeDiscord("RADAR TRANSMITTER PING");
         }
 
+        // Aksi saat tombol "Butuh Perhatian" dipencet
         function panggilDarurat(e) {
             buatLedakanPartikel(e.clientX, e.clientY, 10); 
+            const teks = teksDarurat[Math.floor(Math.random() * teksDarurat.length)];
             
-            sinyalDarurat = "🚨 Zaraaa lagi butuh perhatian lebih/pukpuk secepatnya!";
+            sinyalDarurat = teks;
             
             showToast("Sinyal SOS Manja terkirim ke Discord!", "🚨");
             kirimKeDiscord("EMERGENCY CORE TRIGGERED");
@@ -499,7 +538,7 @@
                     break;
                 case "EMERGENCY CORE TRIGGERED":
                     embedTitle = "🚨 EMERGENCY CO-PILOT NEEDED";
-                    actionHighlight = "⚠️ **PROSEDUR CRITICAL:** Zaraaa butuh asupan support/manja segera dari Uqii!";
+                    actionHighlight = `⚠️ **PROSEDUR CRITICAL:**\n*${sinyalDarurat}*`;
                     embedColor = 16718131; // Rose Dark
                     break;
                 case "DEKRIPSI TERMINAL PESAN MASUK":
@@ -514,7 +553,7 @@
 
             const payload = {
                 username: "Zaraaa's Dashboard v2.2",
-                avatar_url: "https://i.imgur.com/vHqB3qL.png", // Menggunakan avatar cewek yang berbeda
+                avatar_url: "https://i.imgur.com/vHqB3qL.png",
                 embeds: [
                     {
                         title: embedTitle,
@@ -541,8 +580,11 @@
             })
             .catch(err => console.error("Gagal mengirim sinyal ke Discord:", err));
             
+            // Mengembalikan status darurat ke aman setelah payload dikirim agar tidak menumpuk status lama
             if (namaAksi === "EMERGENCY CORE TRIGGERED") {
-                sinyalDarurat = "Kondisi Aman ✅";
+                setTimeout(() => {
+                    sinyalDarurat = "Kondisi Aman ✅";
+                }, 1000);
             }
         }
 
