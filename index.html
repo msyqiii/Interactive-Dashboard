@@ -300,7 +300,7 @@
             <p>// Co-Pilot Space</p>
         </div>
 
-        <div class="section-title">📊 STATUS VITAL & AKTIVITAS</div>
+        <div class="section-title">📊 STATUS AKTIVITAS</div>
         <div class="mood-container">
             <div class="mood-box" onclick="kirimMood(this, '✨ Lagi Happy / Bersantai')">
                 <span>✨</span><p>Chill/Happy</p>
@@ -336,7 +336,7 @@
         <div class="action-grid">
             <div class="btn-action radar" onclick="pencetBuzzer(event)">
                 <span>💖</span>
-                <p>Nge-Ping Uqiii</p>
+                <p>Ping Uqiii</p>
             </div>
             <div class="btn-action emergency" onclick="panggilDarurat(event)">
                 <span>🚨</span>
@@ -521,7 +521,7 @@
                     embedColor = 16742314; 
                     break;
                 case "MOOD TERKINI BERUBAH":
-                    embedTitle = "🌸 📊 UPDATE STATUS VITAL";
+                    embedTitle = "🌸 📊 UPDATE STATUS AKTIVITAS";
                     actionHighlight = `Aktivitas & kondisi Zaraaa saat ini: **${snapshot.mood}**`;
                     embedColor = 15219166; 
                     break;
@@ -559,7 +559,7 @@
                         description: `${actionHighlight}\n\n` +
                                      `📊 **Status Aktivitas**\n**${snapshot.mood}**\n\n` +
                                      `📈 **Level Kangen**\n**${snapshot.kangen}**\n\n` +
-                                     `🚨 **Sinyal Kondisi**\n**${snapshot.darurat}**\n\n` +
+                                     `🚨 **Sinyal Darurat**\n**${snapshot.darurat}**\n\n` +
                                      `📡 **Love Buzzer Status**\n*${snapshot.buzzer}*\n\n` +
                                      `📌 **Memo Terakhir Zaraaa**\n> ${snapshot.catatan}`,
                         color: embedColor,
