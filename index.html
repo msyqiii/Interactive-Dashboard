@@ -14,7 +14,6 @@
             -webkit-tap-highlight-color: transparent;
         }
 
-        /* Background Animasi Bergerak */
         @keyframes gradientBG {
             0% { background-position: 0% 50%; }
             50% { background-position: 100% 50%; }
@@ -28,15 +27,14 @@
             min-height: 100vh;
             display: flex;
             justify-content: center;
-            align-items: flex-start; /* Mengubah center ke flex-start agar saat scroll di laptop tidak terpotong atasnya */
-            padding: 40px 15px; /* Menambah padding atas bawah agar manis saat di-scroll */
+            align-items: flex-start;
+            padding: 40px 15px;
             color: #4a4a4a;
             overflow-x: hidden;
-            overflow-y: auto; /* Memastikan scrollbar vertikal aktif jika konten melebihi layar */
+            overflow-y: auto;
             position: relative;
         }
 
-        /* EFEK SCREEN SHAKE KETIKA TOMBOL DIKLIK */
         @keyframes shake {
             0% { transform: translate(0, 0) rotate(0deg); }
             10% { transform: translate(-2px, -2px) rotate(-1deg); }
@@ -55,7 +53,6 @@
             animation: shake 0.3s ease-in-out;
         }
 
-        /* TAMPILAN DASHBOARD UTAMA */
         .dashboard {
             background: rgba(255, 255, 255, 0.45);
             backdrop-filter: blur(20px);
@@ -69,7 +66,7 @@
             text-align: center;
             position: relative;
             z-index: 10;
-            margin: auto 0; /* Otomatis membuat posisi vertikalnya seimbang di laptop */
+            margin: auto 0;
         }
 
         .header h1 {
@@ -96,7 +93,6 @@
             letter-spacing: 0.5px;
         }
 
-        /* 1. MOOD PICKER */
         .mood-container {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
@@ -137,7 +133,6 @@
             color: #ff6b81;
         }
 
-        /* 2. LOVE PROGRESS BAR */
         .bucin-wrapper {
             background: rgba(255, 255, 255, 0.6);
             border-radius: 20px;
@@ -187,7 +182,6 @@
             transform: scale(1.2);
         }
 
-        /* 3. LOVE BUZZER */
         .buzzer-wrapper {
             background: rgba(255, 255, 255, 0.6);
             border-radius: 24px;
@@ -226,7 +220,6 @@
             line-height: 1.4;
         }
 
-        /* 4. EMERGENCY HUG & NOTES */
         .action-container {
             display: flex;
             gap: 12px;
@@ -297,7 +290,6 @@
             box-shadow: 0 4px 10px rgba(255, 107, 129, 0.2);
         }
 
-        /* NOTIFIKASI TOAST */
         .toast-container {
             position: fixed;
             top: -100px;
@@ -327,7 +319,6 @@
         .toast-icon { font-size: 1.2rem; }
         .toast-msg { font-size: 0.85rem; font-weight: 600; color: #4a4a4a; }
 
-        /* ANIMASI EFEK HUJAN HATI */
         .heart-drop {
             position: fixed;
             pointer-events: none;
@@ -354,7 +345,6 @@
             }
         }
 
-        /* ANIMASI KONFETTI WARNA-WARNI */
         .confetti {
             position: fixed;
             width: 10px;
@@ -390,6 +380,7 @@
             <p>Zaraaa's secret interaction room</p>
         </div>
 
+        <!-- 1. MOOD PICKER -->
         <div class="section-title">📊 Update Mood Kamu Hari Ini</div>
         <div class="mood-container">
             <div class="mood-box" onclick="pilihMood(this, '😊 Senang')">
@@ -410,6 +401,7 @@
             </div>
         </div>
 
+        <!-- 2. LOVE PROGRESS BAR -->
         <div class="section-title">📈 Level Kangen Zaraaa Hari Ini</div>
         <div class="bucin-wrapper">
             <div class="bucin-header">
@@ -422,6 +414,7 @@
             </div>
         </div>
 
+        <!-- 3. LOVE BUZZER -->
         <div class="section-title">❤️ Love Buzzer</div>
         <div class="buzzer-wrapper">
             <p style="font-size: 0.8rem; color: #777;">Pencet tombol hati di bawah kalau lagi kangen Uqii!</p>
@@ -429,6 +422,7 @@
             <p id="buzzer-text"></p>
         </div>
 
+        <!-- 4. EMERGENCY HUG -->
         <div class="section-title">🚨 Tombol Darurat</div>
         <div class="action-container">
             <button class="btn-emergency" onclick="panggilDarurat()">
@@ -436,6 +430,7 @@
             </button>
         </div>
 
+        <!-- 5. NOTE SECTION -->
         <div class="section-title">📌 Titip Catatan Kecil</div>
         <div class="note-section">
             <textarea class="note-input" id="note-text" rows="2" placeholder="Tulis pesan random atau titipan buat Uqii di sini..."></textarea>
@@ -444,10 +439,18 @@
     </div>
 
     <script>
+        // MASUKKAN URL WEBHOOK DISCORD KAMU DI SINI
         const DISCORD_WEBHOOK_URL = "https://discordapp.com/api/webhooks/1524831289415434354/EiC3hkhyhbO4yKvPVcvUT3YbOJRMBgsr-LbD5SgqHah9O8Wz9bgoQWFdHKdlqnYPqwCs";
 
-        let moodSekarang = "Belum diupdate";
-        let levelBucin = "50%";
+        // DATA UTAMA DASHBOARD
+        let dataDashboard = {
+            mood: "Belum diupdate 📱",
+            levelKangen: "50%",
+            buzzerTerakhir: "Belum pernah dipencet hari ini",
+            sinyalDarurat: "Kondisi Aman ✅",
+            catatanTerakhir: "Belum ada catatan baru"
+        };
+
         const teksBuzzer = [
             "Uqii juga kangen bangeeet sama Zaraaa! ❤️",
             "Ayo keluar lagii zaraaaa, kitaa ketemuann lagii! 🫶🏻",
@@ -455,7 +458,6 @@
             "Kangennya dikirim ke WA dong, jangan cuma dipencet! 😜",
         ];
 
-        // Sistem Efek Audio Browser
         let audioCtx = null;
         function initAudio() {
             if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
@@ -477,11 +479,10 @@
                 osc.start();
                 osc.stop(audioCtx.currentTime + duration);
             } catch (e) {
-                console.log("Audio diblokir sebelum interaksi pertama.");
+                console.log("Audio muted");
             }
         }
 
-        // FUNGSI NOTIFIKASI TOAST
         function showToast(message, icon = "✨") {
             const toast = document.getElementById("custom-toast");
             document.getElementById("toast-msg").innerText = message;
@@ -493,7 +494,6 @@
             }, 3500);
         }
 
-        // FUNGSI GUNCANG LAYAR
         function triggerScreenShake() {
             document.body.classList.remove("shake-active");
             void document.body.offsetWidth; 
@@ -503,7 +503,6 @@
             }, 300);
         }
 
-        // FUNGSI HUJAN HATI
         function buatHujanHati(jumlah = 20) {
             const hearts = ["❤️", "💖", "💝", "💕", "🌸"];
             for (let i = 0; i < jumlah; i++) {
@@ -511,65 +510,57 @@
                     const heart = document.createElement("div");
                     heart.classList.add("heart-drop");
                     heart.innerText = hearts[Math.floor(Math.random() * hearts.length)];
-                    
                     heart.style.left = Math.random() * 100 + "vw";
                     heart.style.animationDuration = (Math.random() * 2 + 1.5) + "s";
-                    
                     document.body.appendChild(heart);
                     setTimeout(() => heart.remove(), 3500);
                 }, i * 40);
             }
         }
 
-        // FUNGSI KONFETTI WARNA-WARNI
         function buatConfetti(jumlah = 30) {
             const warnaConfetti = ['#ff4757', '#ffd3e8', '#ff6b81', '#ffa502', '#2ed573', '#1e90ff', '#ed4c67'];
             for (let i = 0; i < jumlah; i++) {
                 setTimeout(() => {
                     const confetti = document.createElement("div");
                     confetti.classList.add("confetti");
-                    
                     confetti.style.left = Math.random() * 100 + "vw";
                     confetti.style.backgroundColor = warnaConfetti[Math.floor(Math.random() * warnaConfetti.length)];
                     confetti.style.animationDuration = (Math.random() * 2 + 1) + "s";
-                    
                     const ukuran = Math.random() * 8 + 6 + "px";
                     confetti.style.width = ukuran;
                     confetti.style.height = ukuran;
-                    
                     document.body.appendChild(confetti);
                     setTimeout(() => confetti.remove(), 3000);
                 }, i * 20);
             }
         }
 
-        // HANDLING LOVE SLIDER
+        // AMBIL INPUTAN USER
         function updateBucin(val) {
-            levelBucin = val + "%";
-            document.getElementById("bucin-val").innerText = levelBucin;
+            dataDashboard.levelKangen = val + "%";
+            document.getElementById("bucin-val").innerText = dataDashboard.levelKangen;
         }
 
         document.getElementById("love-slider").addEventListener("change", function() {
             playSound(350, 0.08, 'sine');
             const nilaiSlider = parseInt(this.value); 
-            let pesanToast = nilaiSlider >= 50 ? `Makin kangen ya! Level terupdate: ${levelBucin} 🥰` : `Waduh kangennya turun nih, sisa: ${levelBucin} 🥺`;
-
-            kirimKeDiscord("📈 UPDATE LEVEL BUCIN ZARA", `Zara menggeser Love Progress Bar miliknya!\n## Level Bucin Saat Ini: **${levelBucin}**`, 16738435);
+            let pesanToast = nilaiSlider >= 50 ? `Makin kangen ya! Level terupdate: ${dataDashboard.levelKangen} 🥰` : `Waduh kangennya turun nih, sisa: ${dataDashboard.levelKangen} 🥺`;
+            
             showToast(pesanToast, "📈");
+            syncKeDiscord("📈 LEVEL KANGEN BERUBAH");
         });
 
-        // HANDLING MOOD PICKER
         function pilihMood(elemen, namaMood) {
             playSound(300, 0.1, 'triangle');
             document.querySelectorAll('.mood-box').forEach(box => box.classList.remove('active'));
             elemen.classList.add('active');
-            moodSekarang = namaMood;
-
-            kirimKeDiscord("📊 UPDATE MOOD ZARA", `Zara baru saja memperbarui status mood-nya harian menjadi:\n## **${namaMood}**\n*Level Bucin: ${levelBucin}*`, 5026544);
+            
+            dataDashboard.mood = namaMood;
             showToast(`Mood kamu berhasil diupdate ke Uqii: ${namaMood}`, "📊");
+            syncKeDiscord("📊 MOOD UPDATED");
         }
 
-        // HANDLING LOVE BUZZER
         function pencetBuzzer() {
             playSound(280, 0.1, 'triangle');
             setTimeout(() => playSound(420, 0.15, 'sine'), 80);
@@ -582,10 +573,10 @@
             const pesanDipilih = teksBuzzer[indexAcak];
             document.getElementById("buzzer-text").innerText = pesanDipilih;
 
-            kirimKeDiscord("❤️ ZARA PENCET LOVE BUZZER!", `Zara lagi kangen banget sama kamu sekarang! \n\n**Status Mood Saat Ini:** ${moodSekarang}\n**Level Bucin:** ${levelBucin}\n**Respons Web:** _"${pesanDipilih}"_`, 16739201);
+            dataDashboard.buzzerTerakhir = `🚨 DIPENCET! _"${pesanDipilih}"_`;
+            syncKeDiscord("❤️ LOVE BUZZER RINGTONE");
         }
 
-        // HANDLING EMERGENCY HUG
         function panggilDarurat() {
             playSound(500, 0.12, 'sawtooth');
             setTimeout(() => playSound(650, 0.12, 'sawtooth'), 100);
@@ -594,11 +585,17 @@
             buatHujanHati(40);    
             buatConfetti(45);     
 
-            kirimKeDiscord("🚨 PANGGILAN DARURAT: EMERGENCY HUG!", `Zara mengirim sinyal darurat! Dia lagi butuh support/pelukan virtual kamu sekarang juga. Hubungi dia segera! \n\n**Status Mood Saat Ini:** ${moodSekarang}\n**Level Bucin:** ${levelBucin}`, 16711715);
+            dataDashboard.sinyalDarurat = "🚨 ZARA BUTUH EMERGENCY HUG SEKARANG!! ❤️";
             showToast("Sinyal darurat terkirim ke HP Uqii! 🚨❤️", "🚨");
+            syncKeDiscord("🚨 EMERGENCY TRIGGERED");
+            
+            // Kembalikan ke mode aman setelah 10 detik di sistem data
+            setTimeout(() => {
+                dataDashboard.sinyalDarurat = "Kondisi Aman ✅";
+                syncKeDiscord("🚨 EMERGENCY CLEAR");
+            }, 10000);
         }
 
-        // HANDLING STICKY NOTES
         function kirimCatatan() {
             playSound(400, 0.08);
             const inputCatatan = document.getElementById("note-text");
@@ -609,30 +606,75 @@
                 return;
             }
 
-            kirimKeDiscord("📌 ZARA MENEMPEL CATATAN BARU", `Zara ninggalin pesan/catatan kecil buat kamu:\n\n> "${isiCatatan}"\n\n**Status Mood Saat Ini:** ${moodSekarang}\n**Level Bucin:** ${levelBucin}`, 16761035);
-            
+            dataDashboard.catatanTerakhir = isiCatatan;
             showToast("Catatan kecilmu berhasil ditempel! 🕊️", "📌");
             inputCatatan.value = "";
+            syncKeDiscord("📌 STICKY NOTE ATTACHED");
         }
 
-        // DISCORD SENDER API
-        function kirimKeDiscord(judul, deskripsi, kodeWarna) {
-            const payload = {
-                content: "📢 @everyone — *Ada kabar baru dari Zaraaa!*",
+        // CORE ENGINE: UPDATE DISCORD (KIRIM ATAU EDIT)
+        function syncKeDiscord(aktivitasTerakhir) {
+            const savedMessageId = localStorage.getItem("discord_msg_id");
+
+            const embedData = {
+                content: `📢 **Status Sinkronisasi Dashboard Zaraaa** | _Aksi Terakhir: ${aktivitasTerakhir}_`,
                 embeds: [{
-                    title: judul,
-                    description: deskripsi,
-                    color: kodeWarna,
+                    title: "🌸 ZARA'S LOVE DASHBOARD PROFILE",
+                    description: "Status kamar interaksi rahasia milik Zaraaa terupdate waktu nyata.",
+                    color: 16740212, // Warna Pink Pastel yang estetik
+                    fields: [
+                        { name: "📊 Mood Terkini", value: `**${dataDashboard.mood}**`, inline: true },
+                        { name: "📈 Level Kangen", value: `**${dataDashboard.levelKangen}**`, inline: true },
+                        { name: "🚨 Sinyal Darurat", value: `**${dataDashboard.sinyalDarurat}**`, inline: false },
+                        { name: "🔔 Love Buzzer Status", value: `${dataDashboard.buzzerTerakhir}`, inline: false },
+                        { name: "📌 Catatan Terakhir Zara", value: `> ${dataDashboard.catatanTerakhir}`, inline: false }
+                    ],
+                    footer: { text: "Ganti device/refresh halaman akan mereset ID pesan agar memicu status baru." },
                     timestamp: new Date().toISOString()
                 }]
             };
 
-            fetch(DISCORD_WEBHOOK_URL, {
+            // Jika sudah ada ID pesan tersimpan di browser, EDIT pesan tersebut
+            if (savedMessageId) {
+                fetch(`${DISCORD_WEBHOOK_URL}/messages/${savedMessageId}`, {
+                    method: "PATCH",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify(embedData)
+                })
+                .then(res => {
+                    // Jika pesan di discord tidak sengaja dihapus Uqii, bikin pesan baru lagi
+                    if (res.status === 404) {
+                        localStorage.removeItem("discord_msg_id");
+                        kirimPesanBaru(embedData);
+                    }
+                })
+                .catch(err => console.error("Gagal mengedit pesan:", err));
+            } else {
+                // Jika belum ada ID tersimpan, buat pesan baru pertama kali
+                kirimPesanBaru(embedData);
+            }
+        }
+
+        function kirimPesanBaru(embedData) {
+            // Ditambahkan parameter ?wait=true di ujung URL agar API Discord mengembalikan ID Pesan setelah sukses dikirim
+            fetch(`${DISCORD_WEBHOOK_URL}?wait=true`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
-                body: JSON.stringify(payload)
-            }).catch(err => console.error("Gagal mengirim:", err));
+                body: JSON.stringify(embedData)
+            })
+            .then(res => res.json())
+            .then(data => {
+                if (data.id) {
+                    localStorage.setItem("discord_msg_id", data.id); // Simpan ID pesan agar bisa di-edit nanti
+                }
+            })
+            .catch(err => console.error("Gagal membuat pesan baru:", err));
         }
+
+        // Otomatis kirim inisialisasi status awal saat web dibuka
+        window.onload = function() {
+            syncKeDiscord("Dashboard Baru Dibuka 🚪");
+        };
     </script>
 </body>
 </html>
