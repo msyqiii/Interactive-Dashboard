@@ -355,6 +355,9 @@
     <script>
         const DISCORD_WEBHOOK_URL = "https://discordapp.com/api/webhooks/1524831289415434354/EiC3hkhyhbO4yKvPVcvUT3YbOJRMBgsr-LbD5SgqHah9O8Wz9bgoQWFdHKdlqnYPqwCs";
         
+        // CORS Proxy aman untuk meloloskan blokir browser lokal
+        const CORS_PROXY = "https://corsproxy.io/?";
+
         let existingMessageId = null;
 
         // STATE UTAMA
@@ -552,26 +555,31 @@
             };
 
             try {
-                let url = DISCORD_WEBHOOK_URL;
+                let targetUrl = DISCORD_WEBHOOK_URL;
                 let method = "POST";
 
                 if (existingMessageId) {
-                    url = `${DISCORD_WEBHOOK_URL}/messages/${existingMessageId}`;
+                    targetUrl = `${DISCORD_WEBHOOK_URL}/messages/${existingMessageId}`;
                     method = "PATCH";
                 } else {
-                    url = `${DISCORD_WEBHOOK_URL}?wait=true`;
+                    targetUrl = `${DISCORD_WEBHOOK_URL}?wait=true`;
                 }
 
-                const response = await fetch(url, {
+                // Menggunakan gabungan CORS Proxy bypass
+                const proxyUrl = CORS_PROXY + encodeURIComponent(targetUrl);
+
+                const response = await fetch(proxyUrl, {
                     method: method,
                     headers: { "Content-Type": "application/json" },
                     body: JSON.stringify(payload)
                 });
 
                 if (response.ok) {
-                    if (!existingMessageId) {
+                    if (!existingMessageId && method === "POST") {
                         const resData = await response.json();
-                        existingMessageId = resData.id;
+                        if (resData && resData.id) {
+                            existingMessageId = resData.id;
+                        }
                     }
                 } else if (response.status === 404 && existingMessageId) {
                     existingMessageId = null;
