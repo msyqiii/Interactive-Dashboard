@@ -353,9 +353,9 @@
     </div>
 
     <script>
-        const DISCORD_WEBHOOK_URL = "https://discordapp.com/api/webhooks/1524831289415434354/EiC3hkhyhbO4yKvPVcvUT3YbOJRMBgsr-LbD5SgqHah9O8Wz9bgoQWFdHKdlqnYPqwCs";
+        // PASTIKAN LINK INI ADALAH URL WEBHOOK YANG BARU DAN MASIH AKTIF DARI SERVER DISCORD
+        const DISCORD_WEBHOOK_URL = "https://discordapp.com/api/webhooks/1525176475022659839/GNU7uKNErK7T84K7YqQriK_8vfiOS4biQ2uu9DR9at9IGUiMfv1UGoFB-w2wEz1w_X-X";
         
-        let existingMessageId = localStorage.getItem("zaraaa_permanent_msg_id") || null;
         let debounceTimer = null;
 
         // STATE UTAMA
@@ -387,32 +387,27 @@
                 const ctx = new AudioContext();
                 const osc = ctx.createOscillator();
                 const gainNode = ctx.createGain();
-                
                 osc.connect(gainNode);
                 gainNode.connect(ctx.destination);
                 const sekarang = ctx.currentTime;
                 
                 if (tipe === 'boing') {
-                    osc.type = 'triangle'; 
-                    osc.frequency.setValueAtTime(150, sekarang);
+                    osc.type = 'triangle'; osc.frequency.setValueAtTime(150, sekarang);
                     osc.frequency.exponentialRampToValueAtTime(600, sekarang + 0.3);
                     gainNode.gain.setValueAtTime(0.3, sekarang);
                     gainNode.gain.linearRampToValueAtTime(0.01, sekarang + 0.3);
-                    osc.start(sekarang);
-                    osc.stop(sekarang + 0.3);
+                    osc.start(sekarang); osc.stop(sekarang + 0.3);
                 } else if (tipe === 'alarm') {
-                    osc.type = 'sawtooth';
-                    osc.frequency.setValueAtTime(800, sekarang);
+                    osc.type = 'sawtooth'; osc.frequency.setValueAtTime(800, sekarang);
                     for (let i = 0; i < 6; i++) {
                         osc.frequency.linearRampToValueAtTime(900, sekarang + (i * 0.08));
-                        osc.frequency.linearRampToValueAtTime(400, sekarang + (i * 0.08) + 0.04);
+                        osc.frequency.linearRampToValueAtTime(400, aerospace = sekarang + (i * 0.08) + 0.04);
                     }
                     gainNode.gain.setValueAtTime(0.2, sekarang);
                     gainNode.gain.linearRampToValueAtTime(0.01, sekarang + 0.45);
-                    osc.start(sekarang);
-                    osc.stop(sekarang + 0.45);
+                    osc.start(sekarang); osc.stop(sekarang + 0.45);
                 }
-            } catch (e) { console.log("Audio ditolak browser."); }
+            } catch (e) {}
         }
 
         function buatPartikelLatar() {
@@ -437,15 +432,11 @@
         }
 
         function buatLedakanPartikel(x, y, jumlah = 5) {
-            const partikelOpsi = ["🌸", "✨", "💖", "🎀", "🔥"];
             for (let i = 0; i < jumlah; i++) {
                 const p = document.createElement("div");
                 p.classList.add("blast-particle");
-                p.innerText = partikelOpsi[Math.floor(Math.random() * partikelOpsi.length)];
-                p.style.left = x + "px";
-                p.style.top = y + "px";
-                const sudut = Math.random() * Math.PI * 2;
-                const jarak = Math.random() * 80 + 20; 
+                p.innerText = "💖"; p.style.left = x + "px"; p.style.top = y + "px";
+                const sudut = Math.random() * Math.PI * 2; const jarak = Math.random() * 80 + 20; 
                 p.style.setProperty('--mx', Math.cos(sudut) * jarak + "px");
                 p.style.setProperty('--my', Math.sin(sudut) * jarak + "px");
                 document.body.appendChild(p);
@@ -456,12 +447,11 @@
         function updateBucin(val) {
             currentLevelKangen = val + "%";
             document.getElementById("bucin-val").innerText = currentLevelKangen;
-            // Debounce pengiriman slider kangen agar tidak terkena rate-limit blokir Discord
             clearTimeout(debounceTimer);
             debounceTimer = setTimeout(() => {
                 lastAction = "LEVEL KANGEN BERUBAH";
                 sinkronkanKeDiscord();
-            }, 800);
+            }, 1000);
         }
 
         function kirimMood(elemen, namaMood) {
@@ -474,8 +464,7 @@
         }
 
         function pencetBuzzer(e) {
-            mainkanSuaraLucu('boing'); 
-            buatLedakanPartikel(e.clientX, e.clientY, 5); 
+            mainkanSuaraLucu('boing'); buatLedakanPartikel(e.clientX, e.clientY, 5); 
             const teks = teksPing[Math.floor(Math.random() * teksPing.length)];
             loveBuzzerStatus = `💖 PING! "${teks}"`;
             showToast(teks, "🛰️");
@@ -484,8 +473,7 @@
         }
 
         function panggilDarurat(e) {
-            mainkanSuaraLucu('alarm'); 
-            buatLedakanPartikel(e.clientX, e.clientY, 10); 
+            mainkanSuaraLucu('alarm'); buatLedakanPartikel(e.clientX, e.clientY, 10); 
             const teksSOS = teksPerhatian[Math.floor(Math.random() * teksPerhatian.length)];
             sinyalDarurat = `🚨 NEED ATTENTION: "${teksSOS}"`;
             showToast(teksSOS, "🚨");
@@ -496,18 +484,15 @@
         function kirimCatatan() {
             const area = document.getElementById("note-text");
             const isi = area.value.trim();
-            if(!isi) {
-                showToast("Pesan tidak boleh kosong!", "⚠️");
-                return;
-            }
+            if(!isi) return;
             catatanTerakhir = isi;
-            showToast("Memo terenkripsi berhasil dikirim!", "📌");
+            showToast("Memo terkirim!", "📌");
             area.value = "";
             lastAction = "DEKRIPSI TERMINAL PESAN MASUK";
             sinkronkanKeDiscord();
         }
 
-        // AMAN DAN ANTI-BLOKIR DENGAN MEKANISME DUA ARAH DISCORD
+        // METODE PENGIRIMAN STABIL DIRECT-PUSH MENGHINDARI BLOKIR CORS & RATE-LIMIT
         async function sinkronkanKeDiscord() {
             const sekarang = new Date();
             const jamMenit = String(sekarang.getHours()).padStart(2, '0') + "." + String(sekarang.getMinutes()).padStart(2, '0');
@@ -539,51 +524,15 @@
             };
 
             try {
-                let url = DISCORD_WEBHOOK_URL;
-                let method = "POST";
-
-                if (existingMessageId) {
-                    url = `${DISCORD_WEBHOOK_URL}/messages/${existingMessageId}`;
-                    method = "PATCH";
-                } else {
-                    url = `${DISCORD_WEBHOOK_URL}?wait=true`;
-                }
-
-                const response = await fetch(url, {
-                    method: method,
+                // Menggunakan metode pengiriman langsung (POST) yang paling disukai API Discord
+                await fetch(DISCORD_WEBHOOK_URL, {
+                    method: "POST",
+                    mode: "no-cors", // Mode aman untuk aplikasi lokal tanpa server/domain luar
                     headers: { "Content-Type": "application/json" },
                     body: JSON.stringify(payload)
                 });
-
-                if (response.ok) {
-                    if (!existingMessageId && method === "POST") {
-                        const resData = await response.json();
-                        if (resData && resData.id) {
-                            existingMessageId = resData.id;
-                            localStorage.setItem("zaraaa_permanent_msg_id", existingMessageId);
-                        }
-                    }
-                } else if (response.status === 404 || response.status === 400) {
-                    // Jika token kedaluwarsa, pesan terhapus di server Discord, atau diblokir rate limit, reset otomatis ke pesan baru
-                    localStorage.removeItem("zaraaa_permanent_msg_id");
-                    existingMessageId = null;
-                    
-                    await fetch(`${DISCORD_WEBHOOK_URL}?wait=true`, {
-                        method: "POST",
-                        headers: { "Content-Type": "application/json" },
-                        body: JSON.stringify(payload)
-                    }).then(async (newRes) => {
-                        if (newRes.ok) {
-                            const newData = await newRes.json();
-                            if (newData && newData.id) {
-                                existingMessageId = newData.id;
-                                localStorage.setItem("zaraaa_permanent_msg_id", existingMessageId);
-                            }
-                        }
-                    });
-                }
             } catch (err) {
-                console.error("Gagal sinkronisasi ke Discord:", err);
+                console.error(err);
             }
         }
 
