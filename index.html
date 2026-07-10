@@ -355,7 +355,6 @@
     <script>
         const DISCORD_WEBHOOK_URL = "https://discordapp.com/api/webhooks/1524831289415434354/EiC3hkhyhbO4yKvPVcvUT3YbOJRMBgsr-LbD5SgqHah9O8Wz9bgoQWFdHKdlqnYPqwCs";
         
-        // ID Pesan utama yang akan terus diedit (Disimpan di localStorage agar tidak hilang saat di-refresh)
         let existingMessageId = localStorage.getItem("zaraaa_msg_id") || null;
 
         // STATE UTAMA
@@ -379,6 +378,57 @@
             "Butuh di-pukpuk dan ditemenin Uqii sekarang juga! 😭✨",
             "Mode manja aktif total, Uqii sibuk ngga yaaa? 👀🎀"
         ];
+
+        // ENGINE SOUND EFED - WEB AUDIO API
+        function mainkanSuaraLucu(tipe) {
+            try {
+                // Inisialisasi Audio Context
+                const AudioContext = window.AudioContext || window.webkitAudioContext;
+                if (!AudioContext) return;
+                const ctx = new AudioContext();
+                
+                const osc = ctx.createOscillator();
+                const gainNode = ctx.createGain();
+                
+                osc.connect(gainNode);
+                gainNode.connect(ctx.destination);
+                
+                const sekarang = ctx.currentTime;
+                
+                if (tipe === 'boing') {
+                    // Efek Boing Lucu untuk Tombol Ping Love
+                    osc.type = 'triangle'; 
+                    osc.frequency.setValueAtTime(150, sekarang);
+                    // Frekuensi meluncur ke atas dengan cepat dalam 0.3 detik
+                    osc.frequency.exponentialRampToValueAtTime(600, sekarang + 0.3);
+                    
+                    gainNode.gain.setValueAtTime(0.3, sekarang);
+                    gainNode.gain.linearRampToValueAtTime(0.01, sekarang + 0.3);
+                    
+                    osc.start(sekarang);
+                    osc.stop(sekarang + 0.3);
+                    
+                } else if (tipe === 'alarm') {
+                    // Efek Alarm Retro / Laser untuk Tombol Emergency Peringatan
+                    osc.type = 'sawtooth';
+                    osc.frequency.setValueAtTime(800, sekarang);
+                    
+                    // Efek modulasi frekuensi naik turun dengan cepat (vibrato ketat)
+                    for (let i = 0; i < 6; i++) {
+                        osc.frequency.linearRampToValueAtTime(900, sekarang + (i * 0.08));
+                        osc.frequency.linearRampToValueAtTime(400, sekarang + (i * 0.08) + 0.04);
+                    }
+                    
+                    gainNode.gain.setValueAtTime(0.2, sekarang);
+                    gainNode.gain.linearRampToValueAtTime(0.01, sekarang + 0.45);
+                    
+                    osc.start(sekarang);
+                    osc.stop(sekarang + 0.45);
+                }
+            } catch (e) {
+                console.log("Audio ditolak browser sebelum ada interaksi pertama.");
+            }
+        }
 
         function buatPartikelLatar() {
             if (document.visibilityState !== 'visible') return; 
@@ -444,6 +494,7 @@
         }
 
         function pencetBuzzer(e) {
+            mainkanSuaraLucu('boing'); // <-- Memicu Suara Lucu
             buatLedakanPartikel(e.clientX, e.clientY, 5); 
             const teks = teksPing[Math.floor(Math.random() * teksPing.length)];
             loveBuzzerStatus = `💖 PING! "${teks}"`;
@@ -453,6 +504,7 @@
         }
 
         function panggilDarurat(e) {
+            mainkanSuaraLucu('alarm'); // <-- Memicu Suara Lucu
             buatLedakanPartikel(e.clientX, e.clientY, 10); 
             const teksSOS = teksPerhatian[Math.floor(Math.random() * teksPerhatian.length)];
             sinyalDarurat = `🚨 NEED ATTENTION: "${teksSOS}"`;
@@ -475,7 +527,7 @@
             sinkronkanKeDiscord();
         }
 
-        // FUNGSI UTAMA SINKRONISASI (Menggunakan PATCH jika Pesan Sudah Ada)
+        // SINKRONISASI DISCORD
         async function sinkronkanKeDiscord() {
             const waktuSekarang = new Date().toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' });
             
@@ -541,12 +593,10 @@
                 let url = DISCORD_WEBHOOK_URL;
                 let method = "POST";
 
-                // Jika ID pesan lama terdeteksi, ubah url dan method menjadi PATCH (mengedit pesan)
                 if (existingMessageId) {
                     url = `${DISCORD_WEBHOOK_URL}/messages/${existingMessageId}`;
                     method = "PATCH";
                 } else {
-                    // Biar dapet return ID pesan baru saat pertama kali kirim, tambah query ?wait=true
                     url = `${DISCORD_WEBHOOK_URL}?wait=true`;
                 }
 
@@ -563,10 +613,20 @@
                         localStorage.setItem("zaraaa_msg_id", existingMessageId);
                     }
                 } else if (response.status === 404 && existingMessageId) {
-                    // Jika pesan di-delete Uqii di Discord, buat pesan baru lagi
                     localStorage.removeItem("zaraaa_msg_id");
                     existingMessageId = null;
-                    sinkronkanKeDiscord();
+                    
+                    await fetch(`${DISCORD_WEBHOOK_URL}?wait=true`, {
+                        method: "POST",
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify(payload)
+                    }).then(async (res) => {
+                        if (res.ok) {
+                            const resData = await res.json();
+                            existingMessageId = resData.id;
+                            localStorage.setItem("zaraaa_msg_id", existingMessageId);
+                        }
+                    });
                 }
             } catch (err) {
                 console.error("Gagal sinkronisasi ke Discord:", err);
