@@ -355,10 +355,7 @@
     <script>
         const DISCORD_WEBHOOK_URL = "https://discordapp.com/api/webhooks/1524831289415434354/EiC3hkhyhbO4yKvPVcvUT3YbOJRMBgsr-LbD5SgqHah9O8Wz9bgoQWFdHKdlqnYPqwCs";
         
-        // Mengamankan bypass CORS browser lokal via proxy alternatif khusus PATCH/POST
-        const CORS_PROXY = "https://corsproxy.io/?";
-
-        // MENGUNCI 1 NOTIFIKASI SECARA PERMANEN DI LOCAL STORAGE
+        // MENYIMPAN ID PERMANEN DI LOCALSTORAGE AGAR TIDAK BERUBAH DAN BERGANTI PESAN BARU
         let existingMessageId = localStorage.getItem("zaraaa_permanent_msg_id") || null;
 
         // STATE UTAMA
@@ -525,7 +522,7 @@
             sinkronkanKeDiscord();
         }
 
-        // ABSOLUTE ONE-NOTIFICATION LIFETIME SYNC ENGINE
+        // PENGIRIMAN MURNI BEBAS BLOKIR PROXY & LOCK 1 NOTIFIKASI
         async function sinkronkanKeDiscord() {
             const sekarang = new Date();
             const jamMenit = String(sekarang.getHours()).padStart(2, '0') + "." + String(sekarang.getMinutes()).padStart(2, '0');
@@ -557,28 +554,24 @@
             };
 
             try {
-                let targetUrl = DISCORD_WEBHOOK_URL;
+                let url = DISCORD_WEBHOOK_URL;
                 let method = "POST";
 
-                // Jika sudah ada ID pesan tersimpan di browser, kita edit (PATCH) pesan tersebut tanpa membuat notif baru
+                // Gunakan mode edit jika ID pesan sudah dibuat sebelumnya agar tetap stay jadi 1 notifikasi
                 if (existingMessageId) {
-                    targetUrl = `${DISCORD_WEBHOOK_URL}/messages/${existingMessageId}`;
+                    url = `${DISCORD_WEBHOOK_URL}/messages/${existingMessageId}`;
                     method = "PATCH";
                 } else {
-                    targetUrl = `${DISCORD_WEBHOOK_URL}?wait=true`;
+                    url = `${DISCORD_WEBHOOK_URL}?wait=true`;
                 }
 
-                // Melewatkan pengiriman menggunakan CORS proxy untuk menjamin bypass dari lokal browser Anda
-                const proxyUrl = CORS_PROXY + encodeURIComponent(targetUrl);
-
-                const response = await fetch(proxyUrl, {
+                const response = await fetch(url, {
                     method: method,
                     headers: { "Content-Type": "application/json" },
                     body: JSON.stringify(payload)
                 });
 
                 if (response.ok) {
-                    // Simpan ID pesan jika ini adalah pesan pertama yang dibuat
                     if (!existingMessageId && method === "POST") {
                         const resData = await response.json();
                         if (resData && resData.id) {
@@ -587,7 +580,7 @@
                         }
                     }
                 } else if (response.status === 404 && existingMessageId) {
-                    // Jika pesan di discord tidak sengaja terhapus, buat pesan baru lagi
+                    // Reset total jika pesan terhapus manual di room Discord
                     localStorage.removeItem("zaraaa_permanent_msg_id");
                     existingMessageId = null;
                     sinkronkanKeDiscord();
