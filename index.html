@@ -580,7 +580,6 @@
             })
             .catch(err => console.error("Gagal mengirim sinyal ke Discord:", err));
             
-            // Mengembalikan status darurat ke aman setelah payload dikirim agar tidak menumpuk status lama
             if (namaAksi === "EMERGENCY CORE TRIGGERED") {
                 setTimeout(() => {
                     sinyalDarurat = "Kondisi Aman ✅";
