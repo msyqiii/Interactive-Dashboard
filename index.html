@@ -48,7 +48,7 @@
             100% { transform: translateY(-10vh) translateX(60px) rotate(360deg); opacity: 0; }
         }
 
-        /* Container Dashboard Utama (Glitch & Rose Glow) */
+        /* Container Dashboard Utama */
         .dashboard {
             background: rgba(20, 10, 30, 0.75);
             backdrop-filter: blur(25px);
@@ -101,7 +101,7 @@
             gap: 8px;
         }
 
-        /* 1. GRID STATUS SIBUK & MOOD */
+        /* GRID STATUS SIBUK & MOOD */
         .mood-container {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
@@ -142,7 +142,7 @@
 
         .mood-box.active p { color: #fb7185; }
 
-        /* 2. KANGEN SLIDER PINK PINK GLOW */
+        /* KANGEN SLIDER PINK PINK GLOW */
         .bucin-wrapper {
             background: rgba(35, 15, 45, 0.6);
             border-radius: 20px;
@@ -184,7 +184,7 @@
         }
         .bucin-slider::-webkit-slider-thumb:active { transform: scale(1.2); }
 
-        /* 3. INTERAKSI KILAT */
+        /* INTERAKSI KILAT */
         .action-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -214,7 +214,7 @@
         .btn-action.emergency { border-color: #f43f5e; color: #fda4af; }
         .btn-action.emergency:active { background: rgba(244, 63, 94, 0.2); transform: translateY(2px); }
 
-        /* 4. PAPAN PESAN / TERMINAL COMFORT */
+        /* PAPAN PESAN / TERMINAL COMFORT */
         .note-section {
             background: rgba(35, 15, 45, 0.6);
             border-radius: 20px;
@@ -354,14 +354,13 @@
     <script>
         const DISCORD_WEBHOOK_URL = "https://discordapp.com/api/webhooks/1524831289415434354/EiC3hkhyhbO4yKvPVcvUT3YbOJRMBgsr-LbD5SgqHah9O8Wz9bgoQWFdHKdlqnYPqwCs";
 
-        // VARIABEL STATE GLOBAL STATUS ZARAAA
+        // STATE UTAMA
         let currentLevelKangen = "50%";
         let currentMood = "Belum Diatur 📋";
         let sinyalDarurat = "Kondisi Aman ✅";
         let loveBuzzerStatus = "Belum ada interaksi 📡";
         let catatanTerakhir = "Belum ada pesan terbaru 💬";
 
-        // Teks acak khusus tombol PING
         const teksPing = [
             "Zaraaa mendadak kangen berat sama Uqii! 👀🔥",
             "Sinyal gemas meluncur, Uqii wajib bales secepatnya! 🚀🌸",
@@ -369,7 +368,6 @@
             "Deteksi kangen berbunyi: Uqii mana yaaa? 🛰️🎀"
         ];
 
-        // Teks acak khusus tombol BUTUH PERHATIAN
         const teksPerhatian = [
             "Zaraaa lagi butuh perhatian lebih/pukpuk secepatnya! 🥺💝",
             "SOS! Asupan manja Zaraaa menipis, Uqii dimohon merapat! 🚨🧸",
@@ -377,7 +375,6 @@
             "Mode manja aktif total, Uqii sibuk ngga yaaa? 👀🎀"
         ];
 
-        // Generator Partikel Latar Belakang (Versi Cewek)
         function buatPartikelLatar() {
             if (document.visibilityState !== 'visible') return; 
             const emojis = ["✨", "💖", "🌸", "🎵", "🔮"];
@@ -399,7 +396,6 @@
             setTimeout(() => toast.classList.remove("show"), 2500);
         }
 
-        // Efek Ledakan Emote
         function buatLedakanPartikel(x, y, jumlah = 5) {
             const partikelOpsi = ["🌸", "✨", "💖", "🎀", "🔥"];
             for (let i = 0; i < jumlah; i++) {
@@ -435,9 +431,7 @@
         function kirimMood(elemen, namaMood) {
             document.querySelectorAll('.mood-box').forEach(box => box.classList.remove('active'));
             elemen.classList.add('active');
-            
             currentMood = namaMood;
-
             showToast(`Status: ${namaMood}`, "📊");
             kirimKeDiscord("MOOD TERKINI BERUBAH");
         }
@@ -445,9 +439,7 @@
         function pencetBuzzer(e) {
             buatLedakanPartikel(e.clientX, e.clientY, 5); 
             const teks = teksPing[Math.floor(Math.random() * teksPing.length)];
-            
             loveBuzzerStatus = `💖 PING! "${teks}"`;
-            
             showToast(teks, "🛰️");
             kirimKeDiscord("RADAR TRANSMITTER PING");
         }
@@ -455,9 +447,7 @@
         function panggilDarurat(e) {
             buatLedakanPartikel(e.clientX, e.clientY, 10); 
             const teksSOS = teksPerhatian[Math.floor(Math.random() * teksPerhatian.length)];
-            
             sinyalDarurat = `🚨 NEED ATTENTION: "${teksSOS}"`;
-            
             showToast(teksSOS, "🚨");
             kirimKeDiscord("EMERGENCY CORE TRIGGERED");
         }
@@ -469,21 +459,18 @@
                 showToast("Pesan tidak boleh kosong!", "⚠️");
                 return;
             }
-            
             catatanTerakhir = isi;
-            
             showToast("Memo terenkripsi berhasil dikirim!", "📌");
             area.value = "";
             kirimKeDiscord("DEKRIPSI TERMINAL PESAN MASUK");
         }
 
-        // FUNGSI SEND EMBED KE DISCORD
         function kirimKeDiscord(namaAksi) {
-            const waktuSekarang = new Date().toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
+            const waktuSekarang = new Date().toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' });
             
             let embedTitle = "";
             let actionHighlight = "";
-            let embedColor = 15728564; // Default: Pink Cyber
+            let embedColor = 15728564; 
 
             switch(namaAksi) {
                 case "SYSTEM CORE ONLINE":
@@ -513,7 +500,7 @@
                     break;
                 case "DEKRIPSI TERMINAL PESAN MASUK":
                     embedTitle = "💬 DEKRIPSI TERMINAL PESAN MASUK";
-                    actionHighlight = "Sebuah transkrip rahasia masuk dari Zaraaa untuk Uqii.";
+                    actionHighlight = `Sebuah transkrip rahasia masuk dari Zaraaa untuk Uqii.`;
                     embedColor = 16758464; 
                     break;
                 default:
@@ -531,7 +518,7 @@
                                      `📊 **Status Aktivitas**\n**${currentMood}**\n\n` +
                                      `📈 **Level Kangen**\n**${currentLevelKangen}**\n\n` +
                                      `🚨 **Sinyal Kondisi**\n**${sinyalDarurat}**\n\n` +
-                                     `?? **Love Buzzer Status**\n*${loveBuzzerStatus}*\n\n` +
+                                     `📡 **Love Buzzer Status**\n*${loveBuzzerStatus}*\n\n` +
                                      `📌 **Memo Terakhir Zaraaa**\n> ${catatanTerakhir}`,
                         color: embedColor,
                         footer: {
@@ -548,11 +535,13 @@
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(payload)
             })
+            .then(() => {
+                // RESET status darurat secara aman HANYA SETELAH data terkirim penuh ke Discord
+                if (namaAksi === "EMERGENCY CORE TRIGGERED") {
+                    sinyalDarurat = "Kondisi Aman ✅";
+                }
+            })
             .catch(err => console.error("Gagal mengirim sinyal ke Discord:", err));
-            
-            if (namaAksi === "EMERGENCY CORE TRIGGERED") {
-                sinyalDarurat = "Kondisi Aman ✅";
-            }
         }
 
         window.onload = function() {
